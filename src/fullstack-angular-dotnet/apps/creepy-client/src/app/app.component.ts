@@ -6,11 +6,11 @@ import {tap} from "rxjs";
 import {DokumentenlisteEintragDto} from "./models/dokument";
 import {environment} from "../environments/environment";
 import {CommonModule} from "@angular/common";
-import {ErstelleDokumentModal} from "./erstelle-dokument/erstelle-dokument-modal.component";
+import {ErstelleDokumentModalComponent} from "./erstelle-dokument/erstelle-dokument-modal.component";
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, ErstelleDokumentModal],
+  imports: [CommonModule, RouterModule, ErstelleDokumentModalComponent],
   selector: 'fullstack-angular-dotnet-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

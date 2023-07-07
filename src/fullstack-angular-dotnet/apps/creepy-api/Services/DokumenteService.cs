@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using CreepyApi.Domain;
@@ -6,12 +6,12 @@ using CreepyApi.Infrastructure;
 
 namespace CreepyApi.Services;
 
-public class DokumenteService : Repository
+public class DokumenteService : IDokumenteRepository
 {
     private static readonly string JSONPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/dokumente.json";
     
-    static DokumenteService instance = null;
-    private List<Dokument> dokumente = new List<Dokument>();
+    static DokumenteService? instance = null;
+    private List<IDokument> dokumente = new List<IDokument>();
 
     public static DokumenteService Instance
         {
@@ -27,7 +27,7 @@ public class DokumenteService : Repository
             }
         }
 
-    private static List<Dokument> LoadDokumenteFromJSON()
+    private static List<IDokument> LoadDokumenteFromJSON()
     {
         if (!File.Exists(JSONPath))
         {
@@ -36,10 +36,10 @@ public class DokumenteService : Repository
         }
 
         var json = File.ReadAllText(JSONPath, Encoding.UTF8);
-        return JsonSerializer.Deserialize<List<Dokument>>(json) ?? new List<Dokument>();
+        return JsonSerializer.Deserialize<List<IDokument>>(json) ?? new List<IDokument>();
     }
 
-    public Dokument? Find(Guid id)
+    public IDokument? Find(Guid id)
     {
         foreach (var dokument in dokumente)
         {
@@ -52,12 +52,12 @@ public class DokumenteService : Repository
         return null;
     }
 
-    public List<Dokument> List()
+    public List<IDokument> List()
     {
         return dokumente.ToList();
     }
 
-    public void Add(Dokument dokument)
+    public void Add(IDokument dokument)
     {
         dokumente.Add(dokument);
     }

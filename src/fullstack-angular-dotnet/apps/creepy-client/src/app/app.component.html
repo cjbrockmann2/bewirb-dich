@@ -1,7 +1,7 @@
 <button (click)="openDocumentCreation()">Neu</button>
 <button (click)="selectedDocumentAnnehmen()" [disabled]="!selectedDocument || !selectedDocument.kannAngenommenWerden">Annehmen</button>
 <button (click)="selectedDocumentAusstellen()" [disabled]="!selectedDocument ||  !selectedDocument.kannAusgestelltWerden">Versenden</button>
-<dokument-modal></dokument-modal>
+<fullstack-angular-dotnet-dokument-modal></fullstack-angular-dotnet-dokument-modal>
 <table>
 
   <tr>

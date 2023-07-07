@@ -1,4 +1,4 @@
-﻿namespace CreepyApi.Domain;
+namespace CreepyApi.Domain;
 
 public enum Risiko
 {
@@ -10,11 +10,13 @@ public static class RisikoHelper
 {
     public static Risiko Parse(string risiko)
     {
-        switch (risiko)
-        {
-            case "Gering": return Risiko.Gering;
-            case "Mittel": return Risiko.Mittel;
-            default: throw new ArgumentException($"{risiko} ist kein gültiger Wert");
-        }
+      if (string.IsNullOrEmpty(risiko)) risiko = string.Empty;
+      risiko = risiko.Trim().ToLower();
+      switch (risiko)
+      {
+          case "gering": return Risiko.Gering;
+          case "mittel": return Risiko.Mittel;
+          default: throw new ArgumentException($"{risiko} ist kein gültiger Wert");
+      }
     }
 }

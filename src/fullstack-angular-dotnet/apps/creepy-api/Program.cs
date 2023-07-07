@@ -1,3 +1,6 @@
+using CreepyApi.Infrastructure;
+using CreepyApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +14,8 @@ builder.Services.AddCors(options =>
 {
   options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
+
+builder.Services.AddSingleton<IDokumenteRepository, DokumenteService>();
 
 var app = builder.Build();
 

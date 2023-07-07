@@ -5,13 +5,13 @@ import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 
 @Component({
-    selector: 'dokument-modal',
+    selector: 'fullstack-angular-dotnet-dokument-modal',
     templateUrl: 'erstelle-dokument-modal.component.html',
     styleUrls: ['erstelle-dokument-modal.component.scss'],
     imports: [CommonModule, FormsModule],
     standalone: true
 })
-export class ErstelleDokumentModal implements OnInit, OnDestroy {
+export class ErstelleDokumentModalComponent implements OnInit, OnDestroy {
 
     private element: any;
 
