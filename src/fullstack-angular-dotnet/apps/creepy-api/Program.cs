@@ -1,5 +1,9 @@
+using CreepyApi.Domain;
 using CreepyApi.Infrastructure;
 using CreepyApi.Services;
+using CreepyApi.Extensions; 
+using Microsoft.AspNetCore.Diagnostics;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,17 +19,19 @@ builder.Services.AddCors(options =>
   options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-builder.Services.AddSingleton<IDokumenteRepository, DokumenteService>();
+builder.Services.AddSingleton<IGenericRepository<IDokument>, DokumenteService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || 1==1)
 {
   app.UseSwagger();
   app.UseSwaggerUI();
 }
+
+app.ConfigureExceptionHandler(app.Environment);
 
 app.UseHttpsRedirection();
 

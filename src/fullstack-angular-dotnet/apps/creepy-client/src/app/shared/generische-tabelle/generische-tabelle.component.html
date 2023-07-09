@@ -1,0 +1,33 @@
+
+<div class="container" *ngIf="tabellenDaten.length > 0">
+<h3 *ngIf="titel">{{ titel }}</h3>
+<table class="tab" *ngIf="tabellenDaten.length > 0 && tabellenSpalten.length > 0">
+  <thead>
+    <tr>
+      <th *ngFor="let col of tabellenSpalten">{{ col.columnTitle }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of tabellenDaten">
+      <ng-container *ngFor="let header of tabellenSpalten">
+
+        <ng-container [ngSwitch]="header.columnFormat === 'numeric'? 1 : (header.columnFormat === 'currency' ? 2 : (header.columnFormat === 'boolean' ? 3 : -1))">
+          <ng-container *ngSwitchCase="1">
+            <td class="rechts">{{ data[header.columnName] | number }}</td>
+          </ng-container>
+          <ng-container *ngSwitchCase="2">
+            <td class="rechts">{{ data[header.columnName] | currency }}</td>
+          </ng-container>
+          <ng-container *ngSwitchCase="3">
+            <td>{{ data[header.columnName] ? 'ja' : 'nein' }}</td>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <td>{{ data[header.columnName] }}</td>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
+</div>
+

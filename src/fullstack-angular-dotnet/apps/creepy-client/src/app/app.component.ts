@@ -1,57 +1,37 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import {HttpClient} from "@angular/common/http";
-import {ErstelleDokumentModalService} from "./erstelle-dokument/erstelle-dokument-modal.service";
-import {tap} from "rxjs";
-import {DokumentenlisteEintragDto} from "./models/dokument";
-import {environment} from "../environments/environment";
-import {CommonModule} from "@angular/common";
-import {ErstelleDokumentModalComponent} from "./erstelle-dokument/erstelle-dokument-modal.component";
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DokumentenListeComponent } from './dokumenten-liste/dokumenten-liste.component';
+import { EingekaufteVersicherungenComponent } from './tabellen/eingekaufte-versicherungen.component';
+import { ConfigDataService } from './services/config-data.service';
+import { PassDataBetweenComponentsService } from './services/pass-data-between-components.service';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule, RouterModule, ErstelleDokumentModalComponent],
   selector: 'fullstack-angular-dotnet-root',
+  standalone: true,
+  imports: [CommonModule, DokumentenListeComponent, EingekaufteVersicherungenComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  dokumente: DokumentenlisteEintragDto[] = [];
+export class AppComponent implements OnInit  {
 
-  selectedDocument: DokumentenlisteEintragDto | undefined
+  constructor(private configData: ConfigDataService, private passData: PassDataBetweenComponentsService) {
 
-  constructor(public http: HttpClient, private eDMService: ErstelleDokumentModalService ) {
-    eDMService.saved.pipe(tap(() => {
-      this.ladeDokumente()
-    })).subscribe()
-    this.ladeDokumente()
+  }
+  ngOnInit(): void {
+    this.configData.holeBerechnungsarten$().subscribe(data => {
+      this.passData.updateBerechnungsarten(data);
+    });
+
+    this.configData.holeDokumententypen$().subscribe(data => {
+      this.passData.updateDokumententypen(data);
+    });
+
+    this.configData.holeRisikoarten$().subscribe(data => {
+      this.passData.updateRisikoArtenSource (data);
+    });
+
+
   }
 
-  openDocumentCreation() {
-    this.eDMService.open();
-  }
 
-  selectDocument(dokument: DokumentenlisteEintragDto) {
-    this.selectedDocument = dokument;
-  }
-
-  async ladeDokumente() {
-    this.dokumente = (await this.http.get<DokumentenlisteEintragDto[]>(environment.baseurl + '/dokumente').toPromise()) || []
-  }
-
-  async selectedDocumentAnnehmen() {
-    if(this.selectedDocument) {
-      await this.http.post<void>(environment.baseurl + '/dokumente/' + this.selectedDocument.id + '/annehmen', null).toPromise()
-      this.selectedDocument = undefined;
-      await this.ladeDokumente()
-
-    }
-  }
-  async selectedDocumentAusstellen() {
-    if(this.selectedDocument) {
-      await this.http.post<void>(environment.baseurl + '/dokumente/' + this.selectedDocument.id + '/ausstellen', null).toPromise()
-      this.selectedDocument = undefined;
-      await this.ladeDokumente()
-    }
-  }
 }

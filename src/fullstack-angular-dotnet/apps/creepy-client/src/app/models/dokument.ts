@@ -19,3 +19,4 @@ export interface ErzeugeNeuesAngebotDto {
   risiko: string;
   versicherungssumme: number;
 }
+

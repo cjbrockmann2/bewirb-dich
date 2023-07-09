@@ -6,32 +6,22 @@ using CreepyApi.Infrastructure;
 
 namespace CreepyApi.Services;
 
-public class DokumenteService : IDokumenteRepository
+public class DokumenteService : IGenericRepository<IDokument>
 {
     private static readonly string JSONPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/dokumente.json";
     
-    static DokumenteService? instance = null;
     private List<IDokument> dokumente = new List<IDokument>();
 
-    public static DokumenteService Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new DokumenteService();
-                    instance.dokumente = LoadDokumenteFromJSON();
-                }
-
-                return instance;
-            }
-        }
+    public DokumenteService()
+    {
+      Console.WriteLine(this.GetType());
+    }
 
     private static List<IDokument> LoadDokumenteFromJSON()
     {
         if (!File.Exists(JSONPath))
         {
-            var empty = Enumerable.Empty<Dokument>();
+            var empty = Enumerable.Empty<IDokument>();
             File.WriteAllText(JSONPath, JsonSerializer.Serialize(empty), Encoding.UTF8);
         }
 

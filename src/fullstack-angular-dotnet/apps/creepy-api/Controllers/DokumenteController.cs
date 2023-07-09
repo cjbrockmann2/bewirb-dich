@@ -10,9 +10,9 @@ namespace CreepyApi.Controllers;
 public class DokumenteController : Controller
 {
   public Logger<DokumenteController> logger;
-  private IDokumenteRepository _dokumentenService;
+  private IGenericRepository<IDokument> _dokumentenService;
 
-  public DokumenteController(ILoggerFactory loggerFactory, IDokumenteRepository dokumentenService)
+  public DokumenteController(ILoggerFactory loggerFactory, IGenericRepository<IDokument> dokumentenService)
   {
     logger = new Logger<DokumenteController>(loggerFactory);
     _dokumentenService = dokumentenService;

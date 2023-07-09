@@ -48,3 +48,44 @@ body.modal-open {
   /* body overflow is hidden to hide main scrollbar when modal window is open */
   overflow: hidden;
 }
+
+
+
+table.tab {
+  border-collapse: collapse;
+}
+
+table.tab td,
+table.tab th {
+  border: 1px solid #ababab;
+  padding: 3px 5px;
+  border-collapse: collapse;
+  border-top: none;
+  border-bottom: none;
+}
+
+table.tab tr {
+  border: none;
+}
+
+
+table.tab th:first-child {
+  border-left: none;
+  min-width: 140px;
+}
+
+table.tab th:last-child {
+  border-right: none;
+}
+
+table.tab td:first-child {
+  border-left: none;
+}
+
+table.tab td:last-child {
+  border-right: none;
+}
+ 
+table.tab  td.rechts {
+  text-align: right;
+}

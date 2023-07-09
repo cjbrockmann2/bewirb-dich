@@ -1,4 +1,4 @@
-﻿namespace CreepyApi.Domain;
+namespace CreepyApi.Domain;
 
 public enum Berechnungsart
 {
@@ -7,16 +7,4 @@ public enum Berechnungsart
     AnzahlMitarbeiter = 3
 }
 
-public static class BerechnungsartHelper
-{
-    public static Berechnungsart Parse(string berechnungsart)
-    {
-        switch (berechnungsart)
-        {
-            case "Umsatz": return Berechnungsart.Umsatz;
-            case "Haushaltssumme": return Berechnungsart.Haushaltssumme;
-            case "AnzahlMitarbeiter": return Berechnungsart.AnzahlMitarbeiter;
-            default: throw new ArgumentException($"{berechnungsart} ist kein gültiger Wert");
-        }
-    }
-}
+

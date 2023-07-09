@@ -1,5 +1,6 @@
 using CreepyApi.Domain;
 using CreepyApi.DomainDto;
+using CreepyApi.Helper;
 
 namespace CreepyApi.Services;
 
@@ -19,11 +20,11 @@ public static class Factory
     dokument.InkludiereZusatzschutz = dto.WillZusatzschutz;
     dokument.HatWebshop = dto.HatWebshop;
     dokument.VersicherungsscheinAusgestellt = false;
-    dokument.Risiko = RisikoHelper.Parse(dto.Risiko);
-    dokument.Versicherungssumme = dto.Versicherungssumme;
-    dokument.ZusatzschutzAufschlag = float.Parse(dto.ZusatzschutzAufschlag.Replace("%", ""));
+    dokument.Risiko = ParsingHelper.ParseRisiko(dto.Risiko);
+    dokument.Versicherungssumme = ParsingHelper.PruefeVersicherungssumme(dto.Versicherungssumme);
+    dokument.ZusatzschutzAufschlag = ParsingHelper.ParseZusatzaufschlag(dto.ZusatzschutzAufschlag);
     dokument.Typ = Dokumenttyp.Angebot;
-    dokument.Berechnungsart = BerechnungsartHelper.Parse(dto.Berechnungsart);
+    dokument.Berechnungsart = ParsingHelper.ParseBerechnungsart(dto.Berechnungsart);
     dokument.Kalkuliere();
     return dokument;
   }

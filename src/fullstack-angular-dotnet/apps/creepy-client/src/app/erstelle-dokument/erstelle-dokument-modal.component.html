@@ -5,16 +5,13 @@
 <div class="input">
 	<span class="label">Berechnungsart</span>
 	<select [(ngModel)]="erstelleDokumentModalService.dokument.berechnungsart" class="value" placeholder="Berechnungsart" >
-		<option value="Umsatz">Umsatz</option>
-		<option value="Haushaltssumme">Hauhaltssumme</option>
-		<option value="AnzahlMitarbeiter">Anzahl Mitarbeiter</option>
+		<option *ngFor="let nam of berechnungsArten" value="{{nam.name}}">{{nam.name}}</option>
 	</select>
 </div>
 <div class="input">
 	<span class="label">Risiko</span>
 	<select [(ngModel)]="erstelleDokumentModalService.dokument.risiko" class="value"  placeholder="Risiko" >
-		<option value="Gering">Gering</option>
-		<option value="Mittel">Mittel</option>
+		<option *ngFor="let nam of risikoTypen" value="{{nam.name}}">{{nam.name}}</option>
 	</select>
 </div>
 <div class="input">
@@ -36,6 +33,9 @@
 
 <button (click)="this.erstelleDokumentModalService.close(false)">Schließen</button>
 <button (click)=" this.erstelleDokumentModalService.close(true) ">Speichern</button>
+
+<p *ngIf="errorMessage" style="color:red">{{errorMessage}}</p>
+
 </div>
 </div>
 </div>

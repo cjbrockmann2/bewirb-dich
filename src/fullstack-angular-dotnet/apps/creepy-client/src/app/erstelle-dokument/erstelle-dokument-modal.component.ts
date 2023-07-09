@@ -1,8 +1,9 @@
 import { Component,  ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { ErstelleDokumentModalService } from './erstelle-dokument-modal.service';
 import {FormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
+import { PassDataBetweenComponentsService } from '../services/pass-data-between-components.service';
+import { ConfigTypeDto } from '../models/config-type-dto';
 
 @Component({
     selector: 'fullstack-angular-dotnet-dokument-modal',
@@ -15,7 +16,15 @@ export class ErstelleDokumentModalComponent implements OnInit, OnDestroy {
 
     private element: any;
 
-    constructor(public erstelleDokumentModalService: ErstelleDokumentModalService, private el: ElementRef) {
+    berechnungsArten: ConfigTypeDto[] = [];
+    risikoTypen: ConfigTypeDto[] = [];
+    errorMessage = ''; 
+
+    constructor(
+                public erstelleDokumentModalService: ErstelleDokumentModalService
+                , private el: ElementRef
+                , private passData: PassDataBetweenComponentsService
+    ) {
         this.element = el.nativeElement;
     }
 
@@ -29,6 +38,9 @@ export class ErstelleDokumentModalComponent implements OnInit, OnDestroy {
             }
         });
 
+        this.passData.berechnungsArten$.subscribe(x => {this.berechnungsArten = x;});
+        this.passData.risikoArten$.subscribe(x => {this.risikoTypen = x;});
+        this.passData.errorMessageDokumentErstellen$.subscribe(x => {this.errorMessage = x});
         this.erstelleDokumentModalService.set(this);
     }
 
