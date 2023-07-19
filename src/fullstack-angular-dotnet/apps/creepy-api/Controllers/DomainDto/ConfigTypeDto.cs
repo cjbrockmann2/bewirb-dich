@@ -1,8 +1,9 @@
-namespace CreepyApi.DomainDto
-{
+namespace CreepyApi.Controllers.Dto; 
+
+
   public class ConfigTypeDto
   {
     public int Id { get; set; }
     public string? Name { get; set; }
   }
-}
+

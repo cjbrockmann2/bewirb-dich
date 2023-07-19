@@ -1,4 +1,4 @@
-namespace CreepyApi.DomainDto; 
+namespace CreepyApi.Controllers.Dto; 
 
 public class DokumentenlisteEintragDto
 {

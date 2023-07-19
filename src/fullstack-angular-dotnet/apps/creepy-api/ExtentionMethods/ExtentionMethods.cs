@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace CreepyApi.Extensions;
+namespace CreepyApi.ExtentionMethods;
 
-public static class ExceptionMiddelwareExtensions
+public static class ExtentionMethods
 {
   public static void ConfigureExceptionHandler(this IApplicationBuilder app, IWebHostEnvironment env)
   {

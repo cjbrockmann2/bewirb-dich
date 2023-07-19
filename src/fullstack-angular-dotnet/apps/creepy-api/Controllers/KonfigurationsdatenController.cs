@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using CreepyApi.DomainDto;
-using CreepyApi.Domain;
+using CreepyApi.Controllers.Dto;
+using CreepyApi.Layers.Core.Enums;
 
 namespace CreepyApi.Controllers;
 

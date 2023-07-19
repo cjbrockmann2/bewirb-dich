@@ -1,4 +1,4 @@
-using CreepyApi.Domain;
+using CreepyApi.Layers.Core.Enums;
 using System.Globalization;
 using System.Xml;
 using static System.Net.Mime.MediaTypeNames;
@@ -24,7 +24,7 @@ public static class ParsingHelper
   {
     decimal result = 0;
     if (versicherungssumme <= 0) throw new ArgumentException("Die Versicherungssumme muss größer als null sein");
-    else result = versicherungssumme; 
+    else result = versicherungssumme;
     return result;
   }
 
@@ -32,6 +32,7 @@ public static class ParsingHelper
   public static float ParseZusatzaufschlag(string zusatzaufschlag)
   {
     float result = 0;
+    if (string.IsNullOrEmpty(zusatzaufschlag)) zusatzaufschlag = "0%";
     zusatzaufschlag = zusatzaufschlag.Replace("%", "").Trim();
     float.TryParse(zusatzaufschlag, out result);
     if (result < 0) throw new ArgumentException("Der Zusatzaufschlag darf nicht negativ sein!");

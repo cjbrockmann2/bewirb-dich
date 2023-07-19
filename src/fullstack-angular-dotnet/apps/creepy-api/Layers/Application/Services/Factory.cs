@@ -1,12 +1,14 @@
-using CreepyApi.Domain;
-using CreepyApi.DomainDto;
-using CreepyApi.Helper;
 
-namespace CreepyApi.Services;
+using CreepyApi.Controllers.Dto;
+using CreepyApi.Helper;
+using CreepyApi.Layers.Core.Enums;
+using CreepyApi.Layers.Core.Models;
+
+namespace CreepyApi.Layers.Application.Services;
 
 public static class Factory
 {
-  public static IDokument CreateDokument()
+  public static Dokument CreateDokument()
   {
     var guid = Guid.NewGuid();
     var dokument = new Dokument(guid);
@@ -25,7 +27,6 @@ public static class Factory
     dokument.ZusatzschutzAufschlag = ParsingHelper.ParseZusatzaufschlag(dto.ZusatzschutzAufschlag);
     dokument.Typ = Dokumenttyp.Angebot;
     dokument.Berechnungsart = ParsingHelper.ParseBerechnungsart(dto.Berechnungsart);
-    dokument.Kalkuliere();
     return dokument;
   }
 

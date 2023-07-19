@@ -1,6 +1,7 @@
-namespace CreepyApi.DomainDto;
- 
-  public class ErzeugeNeuesAngebotDto
+namespace CreepyApi.Controllers.Dto;
+
+
+public class ErzeugeNeuesAngebotDto
   {
     public bool HatWebshop { get; init; }
     public string Berechnungsart { get; init; }

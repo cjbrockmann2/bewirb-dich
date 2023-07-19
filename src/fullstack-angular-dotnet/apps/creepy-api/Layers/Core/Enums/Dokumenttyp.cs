@@ -1,4 +1,4 @@
-﻿namespace CreepyApi.Domain;
+namespace CreepyApi.Layers.Core.Enums;
 
 public enum Dokumenttyp
 {

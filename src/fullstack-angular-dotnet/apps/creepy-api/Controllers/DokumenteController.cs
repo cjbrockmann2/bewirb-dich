@@ -1,31 +1,34 @@
-using CreepyApi.Domain;
-using CreepyApi.DomainDto;
-using CreepyApi.Infrastructure;
-using CreepyApi.Services;
+using CreepyApi.Controllers.Dto;
+using CreepyApi.Helper;
+using CreepyApi.Layers.Application.Abstractions;
+using CreepyApi.Layers.Application.Services;
+using CreepyApi.Layers.Core.Enums;
+using CreepyApi.Layers.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CreepyApi.Controllers;
 
 [Controller]
-public class DokumenteController : Controller
+public class DokumenteController : Controller 
 {
   public Logger<DokumenteController> logger;
-  private IGenericRepository<IDokument> _dokumentenService;
+  private IGenericRepository<IDokument> _repo;
+  private IDokumenteService _service;
 
-  public DokumenteController(ILoggerFactory loggerFactory, IGenericRepository<IDokument> dokumentenService)
+  public DokumenteController(ILoggerFactory loggerFactory, IGenericRepository<IDokument> repo, IDokumenteService service)
   {
     logger = new Logger<DokumenteController>(loggerFactory);
-    _dokumentenService = dokumentenService;
+    _repo = repo;
+    _service = service;
   }
 
   [HttpGet]
   [Route("/Dokumente")]
   public ActionResult<IEnumerable<DokumentenlisteEintragDto>> DokumenteAbrufen()
   {
-    //var service = DokumenteService.Instance;
-    var service = _dokumentenService;
+    var result = _service.DokumenteAbrufen();
 
-    var okResult = new OkObjectResult(service.List().Select(dokument => MapToDto(dokument)));
+    var okResult = new OkObjectResult(result.Select(dokument => MapToDto(dokument)).ToList());
 
     return okResult;
   }
@@ -37,7 +40,7 @@ public class DokumenteController : Controller
       Id = dokument.Id,
       Beitrag = dokument.Beitrag,
       Berechnungsart = Enum.GetName(typeof(Berechnungsart), dokument.Berechnungsart)!,
-      Dokumenttyp =  Enum.GetName(typeof(Dokumenttyp), dokument.Typ)!,
+      Dokumenttyp = Enum.GetName(typeof(Dokumenttyp), dokument.Typ)!,
       Risiko = Enum.GetName(typeof(Risiko), dokument.Risiko)!,
       Versicherungssumme = dokument.Versicherungssumme,
       Zusatzschutz = $"{dokument.ZusatzschutzAufschlag}%",
@@ -51,46 +54,16 @@ public class DokumenteController : Controller
   [Route("/Dokumente/{id}")]
   public DokumentenlisteEintragDto DokumentFinden([FromRoute] Guid id)
   {
-    // var dokument = DokumenteService.Instance.Find(id);
-    var dokument = _dokumentenService.Find(id);
-
-    if (dokument == null)
-    {
-      logger.LogError("Das Dokument mit der ID " + id + " konnte nicht gefunden werden.");
-      throw new ArgumentNullException("Das Dokument mit der ID " + id + " konnte nicht gefunden werden.");
-    }
-    else
-    {
-      return MapToDto(dokument);
-    }
+    var dokument = _service.DokumentFinden(id);
+    return MapToDto(dokument);
   }
 
   [HttpPost]
   [Route("/Dokumente")]
   public ActionResult DokumenteErstellen([FromBody] ErzeugeNeuesAngebotDto dto)
   {
-    //var service = DokumenteService.Instance;
-    var service = _dokumentenService;
-
-    if (dto.Versicherungssumme < 0)
-    {
-      throw new ArgumentOutOfRangeException("Die Versicherungssumme darf nicht negativ sein.");
-    }
-
-    if (string.IsNullOrWhiteSpace(dto.ZusatzschutzAufschlag))
-    {
-      dto.ZusatzschutzAufschlag = "0%";
-    }
-
-    if (dto.ZusatzschutzAufschlag.StartsWith("-"))
-    {
-      throw new ArgumentOutOfRangeException("Der Zusatzschutzaufschlag darf nicht negativ sein.");
-    }
-
     var dokument = Factory.CreateDokumentFromDto(dto);
-
-    service.Add(dokument);
-    service.Save();
+    bool b = _service.DokumenteErstellen(dokument);
 
     return Ok();
   }
@@ -99,20 +72,7 @@ public class DokumenteController : Controller
   [Route("/Dokumente/{id}/annehmen")]
   public ActionResult DokumentAnnehmen([FromRoute] Guid id)
   {
-    //var service = DokumenteService.Instance;
-    var service = _dokumentenService;
-
-    var dokument = service.Find(id);
-
-    if (dokument == null)
-    {
-      logger.LogError("Das Dokument mit der ID " + id + " konnte nicht gefunden werden.");
-      throw new ArgumentException("Das Dokument mit der Id " + id + " konnte nicht gefunden werden.");
-    }
-
-    dokument.Typ = Dokumenttyp.Versicherungsschein;
-    service.Save();
-
+    var b = _service.DokumentAnnehmen(id);
     return new AcceptedResult();
   }
 
@@ -120,24 +80,7 @@ public class DokumenteController : Controller
   [Route("/Dokumente/{id}/ausstellen")]
   public ActionResult DokumentAusstellen([FromRoute] Guid id)
   {
-    //var service = DokumenteService.Instance;
-    var service = _dokumentenService;
-
-    var dokument = service.Find(id);
-
-    if (dokument == null)
-    {
-      logger.LogError("Das Dokument mit der ID " + id + " konnte nicht gefunden werden.");
-      throw new ArgumentException("Das Dokument mit der Id " + id + " konnte nicht gefunden werden.");
-    }
-
-    if (dokument.Typ != Dokumenttyp.Versicherungsschein)
-    {
-      throw new ArgumentException("Nur ein Versicherungsschein kann ausgestellt werden.");
-    }
-    dokument.VersicherungsscheinAusgestellt = true;
-    service.Save();
-
+    var b = _service.DokumentAusstellen(id);
     return new AcceptedResult();
   }
 
