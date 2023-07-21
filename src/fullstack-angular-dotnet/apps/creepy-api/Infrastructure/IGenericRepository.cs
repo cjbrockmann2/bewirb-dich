@@ -4,9 +4,11 @@ namespace CreepyApi.Infrastructure;
 
 public interface IGenericRepository<T>
 {
-  T? Find(Guid id);
-  List<T> List();
-  void Add(T dokument);
+  T? Get(Guid id);
+  IEnumerable<T> GetAll();
+  IEnumerable<T> Find(Func<T, bool> func);
+  void Add(T entity);
+  void Remove(T entity);
   void Save();
 }
 

@@ -4,6 +4,7 @@ using CreepyApi.Services;
 using CreepyApi.Extensions; 
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
+using CreepyApi.Layers.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,8 @@ builder.Services.AddCors(options =>
   options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-builder.Services.AddSingleton<IGenericRepository<IDokument>, DokumenteService>();
+builder.Services.AddSingleton<IGenericRepository<IDokument>, DokumentRepository>();
+builder.Services.AddSingleton<IDokumenteService, DokumenteService>();
 
 var app = builder.Build();
 

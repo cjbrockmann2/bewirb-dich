@@ -17,7 +17,7 @@ export class DokumentenListeService {
   holeDokumente$(): Observable<DokumentenlisteEintragDto[]> {
     return this.http
       .get<DokumentenlisteEintragDto[]>(environment.baseurl + '/dokumente')
-      .pipe(tap(), catchError(Global.handleError));
+      .pipe(catchError(Global.handleError));
   }
 
   nehmeDokumentAn$(id: string): Observable<void> {
